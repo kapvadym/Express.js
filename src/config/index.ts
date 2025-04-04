@@ -8,6 +8,7 @@ if(!process.env.DATABASE || !process.env.DATABASE_PASSWORD){
 
 export const config = {
   databaseUrl: process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD),
-  port: process.env.PORT || 3000,
-  env: process.env.NODE_ENV
+  port: process.env.PORT ? Number(process.env.PORT) : 3000,
+  env: process.env.NODE_ENV,
+  key: process.env.SECRET_KEY
 };

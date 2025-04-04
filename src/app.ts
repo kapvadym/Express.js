@@ -3,6 +3,8 @@ import { config } from './config/index';
 import morgan from 'morgan';
 import cors from 'cors';
 
+import authRouter from "./api-routes/auth/auth.router"
+
 export const app = express();
  
 app.use(express.json());
@@ -19,6 +21,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 })
 
-// app.use('/auth', authRouter)
+app.use('/auth', authRouter)
 // app.use('/accounts', accountsRouter)
 
