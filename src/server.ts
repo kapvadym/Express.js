@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { app } from './app';
+import app from './app';
 import { handleExit } from './utils/handleExit';
 import { config } from './config/index';
 

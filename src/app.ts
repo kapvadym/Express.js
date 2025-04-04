@@ -3,9 +3,12 @@ import { config } from './config/index';
 import morgan from 'morgan';
 import cors from 'cors';
 
-import authRouter from "./api-routes/auth/auth.router"
+import authRouter from "./api-routes/auth/auth.router";
+import accountsRouter from "./api-routes/accounts/account.router";
 
-export const app = express();
+import errorHandler from './middleware/errorHandler';
+
+const app = express();
  
 app.use(express.json());
 app.use(cors());
@@ -22,5 +25,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 
 app.use('/auth', authRouter)
-// app.use('/accounts', accountsRouter)
+app.use('/accounts', accountsRouter)
 
+app.use(errorHandler);
+
+export default app;

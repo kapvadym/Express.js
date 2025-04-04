@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { registerUser, loginUser } from "./auth.service"; 
 import { config } from "../../config/index";
-import { Auth } from "./auth.model";
+
+import catchAsync from "@/utils/catchAsync";
 
 const SECRET_KEY = config.key as string
 
@@ -17,57 +18,42 @@ interface ILogin {
   password: string;
 }
 
-export const Register = async (req: Request, res: Response) => {
-  try {
-    const { email, password, username }: IRegister = req.body;
-    const account = await registerUser(email, password, username);
+export const Register = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const { email, password, username }: IRegister = req.body;
+  const auth = await registerUser(email, password, username);
 
-    const token = jwt.sign(
-      {
-        _id: account._id
-      },
-      SECRET_KEY,
-      {
-        expiresIn: "30d"
-      }
-    );
+  const token = jwt.sign(
+    {
+      _id: auth._id
+    },
+    SECRET_KEY,
+    {
+      expiresIn: "30d"
+    }
+  );
 
-    res.status(201).json({
-      status: "success",
-      token
-    })
+  res.status(201).json({
+    status: "success",
+    token
+  })
+})
 
-  } catch (error) {
-    res.status(400).json({
-      message: "register error",
-      error
-    })
-  }
-}
+export const Login = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const { email, password }: ILogin = req.body;
+  const auth = await loginUser(email, password)
 
-export const Login = async (req: Request, res: Response) => {
-  try {
-    const { email, password }: ILogin = req.body;
-    const account = await loginUser(email, password)
+  const token = jwt.sign(
+    {
+      _id: auth._id
+    },
+    SECRET_KEY,
+    {
+      expiresIn: "30d"
+    }
+  );
 
-    const token = jwt.sign(
-      {
-        _id: account._id
-      },
-      SECRET_KEY,
-      {
-        expiresIn: "30d"
-      }
-    );
-
-    res.status(200).json({
-      status: "success",
-      token
-    });
-  } catch (error) {
-    res.status(400).json({
-      message: "login error",
-      error
-    });
-  }
-}
+  res.status(200).json({
+    status: "success",
+    token
+  });
+})
