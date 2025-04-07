@@ -1,5 +1,5 @@
 import mongoose, { Schema, Model } from "mongoose";
-import { IAuth } from "@/types/models";
+import { IAuth } from "./auth.types";
 
 const AuthSchema: Schema<IAuth> = new Schema(
   {
