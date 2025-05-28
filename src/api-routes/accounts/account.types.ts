@@ -42,3 +42,7 @@ export interface ICreateAccount {
   accountType: AccountType;
   firmName?: string;
 }
+
+export interface IGetProfile {
+  user: Types.ObjectId;
+}

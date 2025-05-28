@@ -4,6 +4,10 @@ import * as AccountController from "./account.controller";
 
 const router = express.Router();
 
-router.get("/:id", checkAuth, AccountController.GetProfile);
+router.get("/", checkAuth, AccountController.getAll);
+router.get("/me", checkAuth, AccountController.getMe);
+router.get("/:id", AccountController.getProfile);
+router.delete("/me/delete", checkAuth, AccountController.deleteAccount)
+
 
 export default router;
